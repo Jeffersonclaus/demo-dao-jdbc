@@ -19,14 +19,19 @@ public class Program {
 		System.out.println();
 		System.out.println("-----Teste---Seller-FindByDepartment----");
 		Department dep = new Department(2, null);
-		
+
 		List<Seller> list = sellerDao.findByDepartment(dep);
 		for (Seller obj : list) {
-			
+
 			System.out.println(obj);
 		}
-		
+		System.out.println("-----Teste---Seller-FindALL----");
+		list = sellerDao.findAll();
+		for (Seller obj : list) {
 
+			System.out.println(obj);
+
+		}
 	}
 
 }
