@@ -89,7 +89,31 @@ public class SellerDaoJDBC implements SellerDao {
 	@Override
 	public void deleteById(Integer id) {
 
+		PreparedStatement st = null;
+		try {
+			st = conn.prepareStatement("DELETE FROM seller WHERE Id = ?");
+					
+
+		
+			st.setInt(1,id);
+
+			int rw = st.executeUpdate();
+
+			if (rw == 0) {
+				System.out.println("Id não identificado!!!");
+				
+				} else {				
+				
+				System.out.println("Deletado com sucesso!!!");}
+			
+		} catch (SQLException e) {
+			throw new DbException(e.getMessage());
+		} finally {
+			DB.closeStatement(st);
+		}
 	}
+
+
 
 	@Override
 	public Seller findByid(Integer id) {
@@ -122,26 +146,7 @@ public class SellerDaoJDBC implements SellerDao {
 
 	}
 
-	// Metodo Auxiliar p/ incrementar Seller
-	private Seller instantiateSeller(ResultSet rs, Department dep) throws SQLException {
-		Seller obj = new Seller();
-		obj.setId(rs.getInt("Id"));
-		obj.setName(rs.getString("Name"));
-		obj.setEmail(rs.getString("Email"));
-		obj.setBaseSalary(rs.getDouble("BaseSalary"));
-		obj.setBirthDate(rs.getDate("BirthDate"));
-		obj.setDepartment(dep);
-		return obj;
-	}
-
-	// Metodo Auxiliar p/ incrementar Department
-	private Department instantiateDepartment(ResultSet rs) throws SQLException {
-		Department dep = new Department();
-		dep.setId(rs.getInt("DepartmentId"));
-		dep.setName(rs.getString("DepName"));
-		return dep;
-	}
-
+	
 	@Override
 	public List<Seller> findAll() {
 		PreparedStatement st = null;
@@ -215,5 +220,27 @@ public class SellerDaoJDBC implements SellerDao {
 		}
 
 	}
+	
+	// Metodo Auxiliar p/ incrementar Seller
+	private Seller instantiateSeller(ResultSet rs, Department dep) throws SQLException {
+		Seller obj = new Seller();
+		obj.setId(rs.getInt("Id"));
+		obj.setName(rs.getString("Name"));
+		obj.setEmail(rs.getString("Email"));
+		obj.setBaseSalary(rs.getDouble("BaseSalary"));
+		obj.setBirthDate(rs.getDate("BirthDate"));
+		obj.setDepartment(dep);
+		return obj;
+	}
+
+	// Metodo Auxiliar p/ incrementar Department
+	private Department instantiateDepartment(ResultSet rs) throws SQLException {
+		Department dep = new Department();
+		dep.setId(rs.getInt("DepartmentId"));
+		dep.setName(rs.getString("DepName"));
+		return dep;
+	}
+
+	
 
 }
